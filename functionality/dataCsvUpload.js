@@ -7,35 +7,43 @@ const Promise = require('bluebird');
 
 const download = require('image-downloader')
 
-const parseCsvDataAndGenerateArray = async function (filepath){
-  try{
-    return new Promise.resolve(function(){
-      var output = [];
-      csv.fromPath(filepath).on("data", async function(data){
-      /*  console.log(data[4] + '\r\n');
-        if(data[0] > 0){
-          const options = { url: data[4],
-    dest: './downloads/image-' + Date.now() + '.jpg'}
-         downloadImage(options).catch(function(error){
-           console.error(error);
-         })
-        output.push(data);
-      }*/
-        output.push(data);
-       }).on("end", function(){
-         console.log('upload done');
-          Promise.resolve(output);
-       }).on("error", function(error){
-         Promise.reject(error);
-       });
-    });
+const parseCsvDataAndGenerateArray = function(filepath) {
+    try {
+        return new Promise(function(resolve, reject) {
+            var output = [];
+            csv.fromPath(filepath).on("data", function(data) {
+              if(data[0] > 0){
+              var newData = [];
+                /*  console.log(data[4] + '\r\n');
+            if(data[0] > 0){
+              const options = { url: data[4],
+        dest: './downloads/image-' + Date.now() + '.jpg'}
+             downloadImage(options).catch(function(error){
+               console.error(error);
+             })
+            output.push(data);
+          }*/
+          newData.push(data[1])
+          newData.push(data[2]);
+          newData.push(data[3])
+          newData.push(data[4]);
+          newData.push(data[5]);
+          newData.push(2);
 
-  }
-  catch(e){
-    console.error('exception: ' + e);
-  }
+                output.push(newData);
+              }
+            }).on("end", function() {
+                console.log('upload done');
+                //console.log(output);
+                resolve(output);
+            }).on("error", function(error) {
+                reject(error);
+            });
+        });
 
-
+    } catch (e) {
+        console.error('exception: ' + e);
+    }
 }
 
 var downloadImage = async function(options){
