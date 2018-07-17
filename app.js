@@ -3,17 +3,10 @@ var SocketIOFileUpload = require('socketio-file-upload'),
     socketio = require('socket.io'),
     express = require('express');
 
-const mysql = require('mysql');
+
 const fileProcessor = require('./functionality/dataCsvUpload');
 
-const con = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'nilesh123',
-    database: 'just_clean_app_test'
-});
-
-con.connect();
+const con = require('./db')
 
 
 // Make your Express server:
