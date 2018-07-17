@@ -1,5 +1,3 @@
- FILE UPLOAD USING Socket.IO
-
 # setup
 npm install
 
