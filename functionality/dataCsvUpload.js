@@ -5,36 +5,45 @@ const csv = require("fast-csv");
 const fs = require("fs");
 const Promise = require('bluebird');
 
-const download = require('image-downloader')
+const request = require('request')
+//const download = require('image-downloader')
+  var downloadImage =require('./downloadImage');
+var crypto = require("crypto");
 
 const parseCsvDataAndGenerateArray = function(filepath) {
     try {
         return new Promise(function(resolve, reject) {
             var output = [];
+            var i = 0;
             csv.fromPath(filepath).on("data", function(data) {
-              if(data[0] > 0){
-              var newData = [];
-                /*  console.log(data[4] + '\r\n');
-            if(data[0] > 0){
-              const options = { url: data[4],
-        dest: './downloads/image-' + Date.now() + '.jpg'}
-             downloadImage(options).catch(function(error){
-               console.error(error);
-             })
-            output.push(data);
-          }*/
-          newData.push(data[1])
-          newData.push(data[2]);
-          newData.push(data[3])
-          newData.push(data[4]);
-          newData.push(data[5]);
-          newData.push(2);
+                if (i > 0) {
 
-                output.push(newData);
-              }
+                    console.log(data[4] + '\r\n');
+
+
+                    let filename = './downloads/image-' + crypto.randomBytes(20).toString('hex') + '';
+
+                  downloadImage.downloadURI(data[4], filename, function(){
+
+                  })
+
+                    var newData = [];
+                    newData[0] = data[1];
+                    newData[1] = data[2];
+                    newData[2] = data[3];
+                    newData[3] = data[4];
+                    newData[4] = data[5];
+                    newData[5] = filename;
+                    newData[6] = 2;
+                    console.log(newData);
+                    output.push(newData);
+
+
+                }
+                i++;
             }).on("end", function() {
                 console.log('upload done');
-                //console.log(output);
+                console.log(output);
                 resolve(output);
             }).on("error", function(error) {
                 reject(error);
@@ -43,16 +52,10 @@ const parseCsvDataAndGenerateArray = function(filepath) {
 
     } catch (e) {
         console.error('exception: ' + e);
+        reject(e);
     }
 }
 
-var downloadImage = async function(options){
-  try {
-     var { filename, image } = await download.image(options)
-     console.log(filename) // => /path/to/dest/image.jpg
-   } catch (e) {
-     console.error(e)
-   }
-};
+// downloadURI('https://image.shutterstock.com/image-vector/peace-sign-creative-lettering-hand-260nw-503667142.jpg','sample.jpg');
 
 module.exports.parseCsvDataAndGenerateArray = parseCsvDataAndGenerateArray;

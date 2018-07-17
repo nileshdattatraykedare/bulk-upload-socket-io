@@ -36,16 +36,25 @@ io.sockets.on("connection", function(socket) {
         const fileName = event.file.pathName;
         return fileProcessor.parseCsvDataAndGenerateArray(event.file.pathName).then(function(rows) {
             console.log(rows);
-            _socket.emit('echo', 'file parsed successfully');
-                var query = con.query('INSERT INTO batches (batch_name, email, phone, actual_image_source, title, status) VALUES ?', [rows], (err, res) => {
-                    if (err) throw err;
-
+            setTimeout(function() {
+                _socket.emit('echo', 'file parsed successfully');
+            }, 500);
+            var query = con.query('INSERT INTO batches (batch_name, email, phone, actual_image_source, title, new_image_source, status) VALUES ?', [rows], (err, res) => {
+                if (err) {
+                    console.error('SQL Error: ' + err)
+                } else {
                     console.log(res);
-                    _socket.emit('echo', 'saved to db successfully');
-                });
-                console.log(query.sql);
+                    setTimeout(function() {
+                        _socket.emit('echo', 'saved to db successfully');
+                    }, 500)
+                }
 
-          //  });
+
+
+            });
+            console.log(query.sql);
+
+            //  });
         });
     });
 
