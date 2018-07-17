@@ -1,0 +1,24 @@
+{
+  "name": "justcleanwebapp",
+  "version": "1.0.0",
+  "description": "this is an assigment from Nourie Alenezi",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nilesh Kedare",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "express": "^4.16.3",
+    "fast-csv": "^2.4.1",
+    "image-downloader": "^3.4.1",
+    "mysql": "^2.15.0",
+    "pug": "^2.0.3",
+    "request": "^2.87.0",
+    "request-progress": "^3.0.0",
+    "socket.io": "^2.1.1",
+    "socketio": "^1.0.0",
+    "socketio-file-upload": "^0.6.1"
+  }
+}
