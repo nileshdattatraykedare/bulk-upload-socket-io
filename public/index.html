@@ -3,8 +3,23 @@
 <head>
 <title>Upload Files</title>
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
-<script src="/siofu/client.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script>
+  function move(start, wid) {
+    var elem = document.getElementById("myBar");
+    var width = start;
+    var id = setInterval(frame, start);
+    function frame() {
+      if (width >= wid) {
+        clearInterval(id);
+      } else {
+        width++;
+        elem.style.width = width + '%';
+      }
+    }
+  }
+  </script>
+  <script src="/siofu/client.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 
 <script type="text/javascript">
@@ -26,6 +41,15 @@ document.addEventListener("DOMContentLoaded", function(){
     });
     socket.on("echo", function(data){
       $("#box").append('<p>' + new Date() + '#: ' + data + '</p>');
+      if(data === 'upload completed'){
+        move(1,30);
+      }
+      if(data === 'file parsed successfully'){
+        move(30,75);
+      }
+      if(data === 'saved to db successfully'){
+        move(75,100);
+      }
     });
 
 }, false);
@@ -34,10 +58,16 @@ document.addEventListener("DOMContentLoaded", function(){
 </head>
 <body>
   <div align="center">
+<a href="/app/batches">View Batches</a>
+  </div>
+  <div align="center">
 <p><button id="upload_btn">Prompt for File</button></p>
 <p><label>Choose File: <input type="file" id="upload_input"/></label></p>
 <div id="file_drop" dropzone="copy" title="drop files for upload">Drop File</div>
 </div>
 <div id="box" style="color:black;font-size:9px;font-style: italic;background-color:'light-grey';"></div>
+<div id="myProgress">
+  <div id="myBar"></div>
+</div>
 </body>
 </html>

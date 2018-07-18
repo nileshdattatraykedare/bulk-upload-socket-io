@@ -12,8 +12,11 @@ const con = require('./db')
 // Make your Express server:
 var app = express()
     .use(SocketIOFileUpload.router)
+    .use('/app', require('./api/v1/router.js'))
     .use(express.static(__dirname + "/public"))
+    .set('view engine', 'ejs')
     .listen(8080);
+
 
 // Start up Socket.IO:
 var io = socketio.listen(app);
