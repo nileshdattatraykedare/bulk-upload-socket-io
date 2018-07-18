@@ -2,23 +2,10 @@
 <html>
 <head>
 <title>Upload Files</title>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script>
-  function move(start, wid) {
-    var elem = document.getElementById("myBar");
-    var width = start;
-    var id = setInterval(frame, start);
-    function frame() {
-      if (width >= wid) {
-        clearInterval(id);
-      } else {
-        width++;
-        elem.style.width = width + '%';
-      }
-    }
-  }
-  </script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script src="/siofu/client.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 
@@ -42,19 +29,31 @@ document.addEventListener("DOMContentLoaded", function(){
     socket.on("echo", function(data){
       $("#box").append('<p>' + new Date() + '#: ' + data + '</p>');
       if(data === 'upload completed'){
-        move(1,30);
+        $( "#progressbar" ).progressbar({
+      value: 33
+    });
       }
       if(data === 'file parsed successfully'){
-        move(30,75);
+        $( "#progressbar" ).progressbar({
+      value: 66
+    });
       }
       if(data === 'saved to db successfully'){
-        move(75,100);
+        $( "#progressbar" ).progressbar({
+      value: 100
+    });
       }
     });
 
 }, false);
 </script>
-
+<script>
+  $( function() {
+    $( "#progressbar" ).progressbar({
+      value: 0
+    });
+  } );
+  </script>
 </head>
 <body>
   <div align="center">
@@ -66,8 +65,6 @@ document.addEventListener("DOMContentLoaded", function(){
 <div id="file_drop" dropzone="copy" title="drop files for upload">Drop File</div>
 </div>
 <div align="center" id="box" style="color:black;font-size:11px;font-style: italic;background-color:'light-grey';"></div>
-<div id="myProgress">
-  <div id="myBar"></div>
-</div>
+<div id="progressbar"></div>
 </body>
 </html>
